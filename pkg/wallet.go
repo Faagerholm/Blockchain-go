@@ -23,7 +23,7 @@ func NewWallet() Wallet {
 	}
 
 	wallet := Wallet{}
-	wallet.PrivateKey = key
+	wallet.privateKey = key
 	wallet.PublicKey = &key.PublicKey
 
 	return wallet

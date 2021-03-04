@@ -44,14 +44,12 @@ func (chain *Chain) LastBlock() Block {
 
 func (chain *Chain) mine(nonce int) {
 	var solution = 1
-	fmt.Println("Mining...")
+	fmt.Println("⛏ Mining...")
 	for {
-
-		//TODO: fix
-		// hash := sha256.Sum256([]byte(strconv.Itoa(nonce + solution)))
 		attempt := sha256.Sum256([]byte(strconv.Itoa(nonce + solution)))
-
-		if string(attempt[:4]) == "0000" {
+		// Setting this to a 'low' value will result in faster mining times.
+		if string(attempt[:3]) == "000" {
+			fmt.Println("Solution:", solution)
 			return
 		}
 		solution++
@@ -68,5 +66,6 @@ func (chain *Chain) addBlock(transaction Transaction, senderKey *rsa.PublicKey, 
 	}
 	newBlock := NewBlock(chain.LastBlock().hash(), transaction)
 	chain.mine(newBlock.nonce)
+	fmt.Println("Solution found, adding block to chain.")
 	chain.block = append(chain.block, newBlock)
 }
